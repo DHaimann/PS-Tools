@@ -465,8 +465,8 @@ Function Run-DCU {
                     "-silent",
                     "-outputLog=$ReportsFolder\update.log",
                     "-reboot=disable",
-                    "-encryptedPassword=AZEUCALUIud/TMdLbnZhamLDx96ZfAwHBjCRHh212K3SiOVUFy5ndIX3mzEya0vzi/nzvRjWDH/eCY0S2w==",
-                    "-encryptionKey=AS1-Desktop"                                       
+                    "-encryptedPassword=AZEUCALUIsdfasdfvqfqaretzbwerujbvwK3SiOVUFy5ndIX3mzEya0vzi/nzvRjWDH/eCY0S2w==",
+                    "-encryptionKey=fqWWE22!vrever"                                       
                 )
 
                 If (!($Type -eq 'all')) { $Arguments += "-updateType=$Type" } Else { $Arguments += "-updateType=bios,driver,firmware" }
