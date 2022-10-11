@@ -10,8 +10,8 @@ Function Set-XMLElement {
     # Create new File Publisher Rule
     $NewFilePublisherRule = $RuleCollection.AppLockerPolicy.RuleCollection.AppendChild($RuleCollection.CreateElement('FilePublisherRule'))
     $NewFilePublisherRule.SetAttribute('Id', $FilePublisherRule.Id)
-    $NewFilePublisherRule.SetAttribute('Name', "Publisher: $($FilePublisherCondition.PublisherName)")
-    $NewFilePublisherRule.SetAttribute('Description', "Product: $($FilePublisherCondition.ProductName) - Found in: $PublisherPath")
+    $NewFilePublisherRule.SetAttribute('Name', "Publisher: $PublisherPublisherName - File: $PublisherPublisherBinaryName")
+    $NewFilePublisherRule.SetAttribute('Description', "Product: $PublisherPublisherProductName - Found in: $PublisherPath")
     $NewFilePublisherRule.SetAttribute('UserOrGroupSid', 'S-1-1-0')
     $NewFilePublisherRule.SetAttribute('Action', 'Allow')
     
@@ -20,7 +20,7 @@ Function Set-XMLElement {
        
     # Create new Publisher Condition
     $NewFilePublisherCondition = $NewConditions.AppendChild($RuleCollection.CreateElement('FilePublisherCondition'))
-    $NewFilePublisherCondition.SetAttribute('PublisherName', $($FilePublisherCondition.PublisherName))
+    $NewFilePublisherCondition.SetAttribute('PublisherName', $PublisherPublisherName)
     $NewFilePublisherCondition.SetAttribute('ProductName', '*')
     $NewFilePublisherCondition.SetAttribute('BinaryName', '*')
     
@@ -29,7 +29,6 @@ Function Set-XMLElement {
     $NewBinaryVersionRange.SetAttribute('LowSection', '*')
     $NewBinaryVersionRange.SetAttribute('HighSection', '*')
 } # Function
-
 
 # Create PublisherRules.xml
 $XMLPath = "C:\Util\AppLocker\PublisherRules.xml"
