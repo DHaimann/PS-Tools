@@ -1,9 +1,13 @@
-﻿[CmdletBinding()]
+[CmdletBinding()]
 
 Param (
     [ValidateScript({Test-Path -Path $_ -PathType 'Leaf'})]
     [Parameter(Mandatory=$true)]
-    $EvtxImportFile
+    $EvtxImportFile,
+
+    [ValidateScript({Test-Path -Path $_ -PathType 'Leaf'})]
+    [Parameter(Mandatory=$false)]
+    $UnTrustedPublishersFile
 )
 
 Function Set-XMLElement {
@@ -29,6 +33,9 @@ Function Set-XMLElement {
     $NewBinaryVersionRange.SetAttribute('LowSection', '*')
     $NewBinaryVersionRange.SetAttribute('HighSection', '*')
 } # Function
+
+# Import UnTrusted Signers File
+$UnTrustedPublishers = (Import-Csv -Path $UnTrustedSignersFile -Delimiter ';').UnTrustedPublisher
 
 # Create PublisherRules.xml
 $XMLPath = "C:\Util\AppLocker\PublisherRules.xml"
@@ -68,7 +75,7 @@ foreach ($Publisher in $Publishers) {
             $Publisher.Publisher.ProductName = $(($PublisherPath.Split('\\')[-1]).Split('.')[0])
             $PublisherPublisherProductName = $Publisher.Publisher.ProductName
         } Else {
-            $PublisherPublisherProductName = "MISSING IN CERT"
+            $PublisherPublisherProductName = "Missing in Cert"
         }
     }
 
@@ -77,7 +84,7 @@ foreach ($Publisher in $Publishers) {
             $Publisher.Publisher.BinaryName = $($PublisherPath.Split('\\')[-1])
             $PublisherPublisherBinaryName = $Publisher.Publisher.BinaryVersion
         } Else {
-            $PublisherPublisherBinaryName = "MISSING IN CERT"
+            $PublisherPublisherBinaryName = "Missing in Cert"
         }
     }
 
@@ -101,6 +108,9 @@ foreach ($Publisher in $Publishers) {
         # Check if rule already exists
         If ($RuleCollectionPublisherNames.Contains($PublisherPublisherName)) {
             Write-Host "Already exists: $PublisherPublisherName" -ForegroundColor Yellow
+            Continue
+        } ElseIf ($UnTrustedPublishers.Contains($PublisherPublisherName)) {
+            Write-Host "Untrusted publisher: $PublisherPublisherName" -ForegroundColor Red
             Continue
         } Else {
             Set-XMLElement
