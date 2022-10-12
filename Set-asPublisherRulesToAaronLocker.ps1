@@ -34,6 +34,16 @@ foreach ($Publisher in $Publishers) {
     
     [string]$PublisherPath = $Publisher.Path
     
+    # Workaround for missing product name and binary for lazy developers
+    If ($PublisherPublisherBinaryName -eq $null -or $PublisherPublisherBinaryName -eq '') {
+        If (!($PublisherPath -eq $null -or $PublisherPath -eq '')) {
+            $Publisher.Publisher.BinaryName = $($PublisherPath.Split('\\')[-1])
+            $PublisherPublisherBinaryName = $Publisher.Publisher.BinaryName
+        } Else {
+            $PublisherPublisherBinaryName = "Missing in Cert"
+        }
+    }
+    
     # Check if rule already exists in TrustedPublishers by publisher name
     $ExistingRule = Select-String -Path $TrustedSignersFile -Pattern $PublisherPublisherName -SimpleMatch -Quiet
 
