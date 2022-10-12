@@ -63,8 +63,23 @@ foreach ($Publisher in $Publishers) {
     [string]$PublisherPath = $Publisher.Path
     
     # Workaround for missing product name and binary for lazy developers
-    If ($PublisherPublisherProductName -eq $null -or $PublisherPublisherProductName -eq '') {$Publisher.Publisher.ProductName = $(($PublisherPath.Split('\\')[-1]).Split('.')[0])}
-    If ($PublisherPublisherBinaryName -eq $null -or $PublisherPublisherBinaryName -eq '') {$Publisher.Publisher.BinaryName = $($PublisherPath.Split('\\')[-1])}
+    If ($PublisherPublisherProductName -eq $null -or $PublisherPublisherProductName -eq '') {
+        If (!($PublisherPath -eq $null -or $PublisherPath -eq '')) { 
+            $Publisher.Publisher.ProductName = $(($PublisherPath.Split('\\')[-1]).Split('.')[0])
+            $PublisherPublisherProductName = $Publisher.Publisher.ProductName
+        } Else {
+            $PublisherPublisherProductName = "MISSING IN CERT"
+        }
+    }
+
+    If ($PublisherPublisherBinaryName -eq $null -or $PublisherPublisherBinaryName -eq '') {
+        If (!($PublisherPath -eq $null -or $PublisherPath -eq '')) {
+            $Publisher.Publisher.BinaryName = $($PublisherPath.Split('\\')[-1])
+            $PublisherPublisherBinaryName = $Publisher.Publisher.BinaryVersion
+        } Else {
+            $PublisherPublisherBinaryName = "MISSING IN CERT"
+        }
+    }
 
     # Generate AppLocker policy
     Try {
