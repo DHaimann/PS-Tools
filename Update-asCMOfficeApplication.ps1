@@ -67,7 +67,7 @@ $OfficeApp = Get-CMApplication -Name "Office Professional Plus 2019 64-bit" -Ver
 $OfficeAppVersion = $OfficeApp.SoftwareVersion
 
 If ([Version]$NewVersion -gt [Version]$OfficeAppVersion) {
-    $FullServerPath = "filesystem::\\fileserver\$SourceFolder"
+    $FullServerPath = "filesystem::\\fileserver\FileShare$\$SourceFolder"
     Write-Output $FullServerPath
 
     # Copy source files
