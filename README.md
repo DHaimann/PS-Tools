@@ -1,8 +1,9 @@
 # PS-Tools
 Collection of PowerShell-Scripts
 
-### Get-asCMOfficeApplication
+##### Update-asCMOfficeApplication
 ~~~
+**Installed ConfigMgr-console is required to be able to update the application with the ConfigMgr-PowerShell module**
 Downloads newest Office Deployment Kit
 Downloads newest Office sources
 Copies file to ConfigMgr file share
