@@ -28,7 +28,11 @@ Function Set-XMLElement {
 } # Function
 
 # Import UnTrusted Signers File
-$UnTrustedPublishers = (Import-Csv -Path $UnTrustedSignersFile -Delimiter ';').UnTrustedPublisher
+If ($UnTrustedPublishersFile -ne $null -and $UnTrustedPublishersFile -ne '') {
+    $UnTrustedPublishers = (Import-Csv -Path $UnTrustedPublishersFile -Delimiter ';').UnTrustedPublisher
+} Else {
+    $UnTrustedPublishers = ''
+}
 
 # Gather AppLocker file information
 $Publishers = Get-AppLockerFileInformation -EventLog -LogPath $EvtxImportFile | Where-Object -FilterScript { $_.Publisher -ne $null }
