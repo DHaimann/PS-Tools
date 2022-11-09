@@ -13,7 +13,7 @@ Set-Location -Path $Softpaq
 
 $OsVer = Get-HPDeviceDetails -Platform ((Get-WmiObject win32_baseboard).Product) -OSList |
 Sort-Object -Descending OperatingSystemRelease | Select-Object -First 1
-Write-Output "Last supported Windows 10 verion is $OsVer"
+Write-Output "Last supported Windows 10 verion is $OsVer.OperatingSystemRelease"
 
 Write-Output "Download and install softpaqs..."
 Get-SoftpaqList -Platform ((Get-WmiObject win32_baseboard).Product) -Os win10 -Bitness 64 -OsVer $OsVer.OperatingSystemRelease | 
