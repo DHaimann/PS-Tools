@@ -106,16 +106,33 @@ Function Install-Softpaqs {
     Write-Host "Set path to $Softpaq"
     Set-Location -Path $Softpaq
 
-    $OsVer = Get-HPDeviceDetails -Platform ((Get-WmiObject win32_baseboard).Product) -OSList |
-    Sort-Object -Descending OperatingSystemRelease | Select-Object -First 1
-    Write-Host "Last supported Windows 10 version is $OsVer.OperatingSystemRelease"
+    Write-Host "Set path to $Softpaq"
+    Set-Location -Path $Softpaq
 
-    Write-Host "Download and install softpaqs..."
-    Get-SoftpaqList -Platform ((Get-WmiObject win32_baseboard).Product) -Os win10 -Bitness 64 -OsVer $OsVer.OperatingSystemRelease | 
+    # Detect Windows 10 or Windows 11
+    $OsInstalled = (Get-ComputerInfo -Property OSVersion).OSVersion
+    If ($OsInstalled -ge '10.0.22000') {
+        $OsInstalled = "Microsoft Windows 11"
+        $Os = 'win11'
+    } Else {
+        $OsInstalled = "Microsoft Windows 10"
+        $Os = 'win10'
+    }
+    
+    # Get last supported Windows version 
+    $OsVer = Get-HPDeviceDetails -Platform ((Get-WmiObject win32_baseboard).Product) -OSList |
+    Where-Object -FilterScript { $_.OperatingSystem -eq $OsInstalled } |
+    Sort-Object -Descending OperatingSystemRelease | Select-Object -First 1
+    Write-Host "$OsInstalled detected"
+    Write-Host "Last supported $OsInstalled version is $($OsVer.OperatingSystemRelease)"
+
+    # Install softpaqs
+    Write-Host "Download and install softpaqs for $Os..."
+    Get-SoftpaqList -Platform ((Get-WmiObject win32_baseboard).Product) -Os $Os -Bitness 64 -OsVer $OsVer.OperatingSystemRelease | 
     Where-Object -FilterScript { $_.Category -like "Driver*" } |
     ForEach-Object { Get-Softpaq -Number $_.id -Action silentinstall -Quiet -Overwrite skip -KeepInvalidSigned -DestinationPath $Softpaq }
-
     Write-Host "...done"
+    
     If ($Restart -eq "TRUE") { Restart-asCMComputer }
 }
 
