@@ -205,17 +205,17 @@ Function Run-ThinInstaller {
         ElseIf ($Selection -eq "Recommended") {$Selection = "R"}
 
         Try {
-            CMTraceLog –Message "/CM -search $Selection -action $Action -noreboot -noicon -exporttowmi" –Component "Update"
-            Write-Host "Running Thin Installer With Args: /CM -search $Selection -action $Action -noreboot -noicon -exporttowmi" -ForegroundColor Green
             $Arguments = @(
                 "/CM",
                 "-search $Selection",
                 "-action $Action",
-                "-noreboot"
                 "-noicon",
                 "-exporttowmi",
+                "-includerebootpackages 1,3,4,5",
+                "-noreboot",
                 "-repository \\server\LenovoDriverRepository",
-                "-log $LogFolder"               
+                "-log $LogFolder",
+		"-debug"
             )
             
             If ($Packagetype -eq 'Application') { $PackageType = 1 }
@@ -223,6 +223,9 @@ Function Run-ThinInstaller {
             ElseIf ($Packagetype -eq 'Bios') { $PackageType = 3 }
             ElseIf ($Packagetype -eq 'Firmware') { $PackageType = 4 }
             If (!($Packagetype -eq 'All')) { $Arguments += "-packagetypes $Type" }
+
+            CMTraceLog –Message "Running Thin Installer With Args: $Arguments" –Component "Update"
+            Write-Host "Running Thin Installer With Args: $Arguments" -ForegroundColor Green
 
             $Process = Start-Process -FilePath "C:\Program Files (x86)\Lenovo\ThinInstaller\ThinInstaller.exe" –WorkingDirectory "C:\Program Files (x86)\Lenovo\ThinInstaller" –ArgumentList $Arguments –NoNewWindow –PassThru –Wait –ErrorAction Stop
         
