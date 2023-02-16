@@ -1,4 +1,4 @@
-﻿[CmdletBinding()]
+[CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false)]
         [ValidateSet("DOWNLOAD", "LIST", "INSTALL", "SCAN")]
@@ -97,9 +97,9 @@ Function Run-ThinInstaller {
             }
         } #Function Restart-asCMComputer
         
-        CMTraceLog –Message "###########################" –Component "Preparation"
-        CMTraceLog –Message "## Invoke-asLeonvoUpdate ##" –Component "Preparation"
-        CMTraceLog –Message "###########################" –Component "Preparation"        
+        CMTraceLog –Message "##########################" –Component "Preparation"
+        CMTraceLog –Message "## Invoke-asLenvoUpdate ##" –Component "Preparation"
+        CMTraceLog –Message "##########################" –Component "Preparation"        
         Write-Host "Starting Lenovo System Update to Update Lenovo Drivers" -ForegroundColor Magenta
  
         # Check Lenovo Device
