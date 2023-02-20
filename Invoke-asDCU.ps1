@@ -1,10 +1,7 @@
-﻿<# Run-HPIA Run Script
-Gary Blok - GARYTOWN.COM
-When you create the Run Script, add a List for the variables and populate them with the validateset you see below.
-Please note, you will get A LOT of data returned in the Run Script Dialog.  Feel free to remove some of the Write-Hosts.  This was orginally written for other deployment methods.
-
-This script is entirely based on Run-HPIA by Gary Blok. I was just trying to customize the script for Dell Command Update. Credit goes to Gary Blok and his great work!
-How to use this script see https://garytown.com/run-scripts-run-hpia
+<# 
+This script is entirely based on Run-HPIA by Gary Blok. I was just trying to customize the script for Dell Command Update.
+Credit goes to Gary Blok and his great work! How to use this script see https://garytown.com/run-scripts-run-hpia
+Dietmar Haimann, 2023-02-20
 #>
 
 
