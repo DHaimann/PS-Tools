@@ -101,11 +101,6 @@ Function Install-Softpaqs {
     $Softpaq = "C:\Softpaq"
     If (Test-Path -Path $Softpaq) { Remove-Item -Path $Softpaq -Recurse -Force }
     New-Item -Path "C:\" -Name "Softpaq" -ItemType Directory -Force
-    Set-Location -Path $Softpaq
-
-    Write-Host "Set path to $Softpaq"
-    Set-Location -Path $Softpaq
-
     Write-Host "Set path to $Softpaq"
     Set-Location -Path $Softpaq
 
