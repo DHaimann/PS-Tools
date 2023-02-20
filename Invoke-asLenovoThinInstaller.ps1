@@ -1,3 +1,10 @@
+<# 
+This script is entirely based on Run-HPIA by Gary Blok. I was just trying to customize the script for Lenovo ThinInstaller.
+Credit goes to Gary Blok and his great work! How to use this script see https://garytown.com/run-scripts-run-hpia
+Dietmar Haimann, 2023-02-20
+#>
+
+
 [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$false)]
@@ -97,9 +104,9 @@ Function Run-ThinInstaller {
             }
         } #Function Restart-asCMComputer
         
-        CMTraceLog –Message "##########################" –Component "Preparation"
-        CMTraceLog –Message "## Invoke-asLenvoUpdate ##" –Component "Preparation"
-        CMTraceLog –Message "##########################" –Component "Preparation"        
+        CMTraceLog –Message "###########################" –Component "Preparation"
+        CMTraceLog –Message "## Invoke-asLenovoUpdate ##" –Component "Preparation"
+        CMTraceLog –Message "###########################" –Component "Preparation"        
         Write-Host "Starting Lenovo System Update to Update Lenovo Drivers" -ForegroundColor Magenta
  
         # Check Lenovo Device
@@ -174,7 +181,7 @@ Function Run-ThinInstaller {
         }
 
         ## Suspend BitLocker if Category BIOS is selected
-        If ((($Category -eq "All") -or ($Category -eq "BIOS")) -and ($Action -eq "Install")) {
+        If ((($Category -eq "All") -or ($Category -eq "Bios")) -and ($Action -eq "Install")) {
             CMTraceLog -Message "Category $Category and Action $Action selected. Try to suspend BitLocker." -Component "Preparation" -Type 2
             Write-Host "Category $Category and Action $Action selected. Try to suspend BitLocker." -ForegroundColor Yellow            
             Try {
@@ -211,7 +218,7 @@ Function Run-ThinInstaller {
                 "-action $Action",
                 "-noicon",
                 "-exporttowmi",
-                "-includerebootpackages 1,3,4,5",
+                "-includerebootpackages 1,3",
                 "-noreboot",
                 "-repository \\server\LenovoDriverRepository",
                 "-log $LogFolder",
